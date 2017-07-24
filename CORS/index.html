@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+	<title>JSONP实现跨域</title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		ul{
+			list-style: none;
+		}
+		.ct{
+			width:800px;
+			margin:0 auto;
+			text-align: center;
+		}
+		.numbers>li{
+			border:1px solid #ccc;
+			margin-top:20px;
+			font-size: 24px;
+		}
+		.btn{
+			background:#f00;
+			color:#fff;
+			display:inline-block;
+			width:100px;
+			height:30px;
+			line-height: 30px;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="ct">
+		<ul class="numbers">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+		</ul>
+		<button class="btn">点我</button>
+	</div>
+
+	<script type="text/javascript">
+		var btn = document.querySelector('.btn'),
+			numbers = document.querySelector('.numbers');
+
+		btn.addEventListener('click',function(){
+			var xhr = new XMLHttpRequest();
+			xhr.open('get','http://b.c.com:8080/getNumbers',true);
+			xhr.send();
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState === 4&&xhr.status === 200){
+					appendHtml(JSON.parse(xhr.responseText));
+				}
+			}
+			//window.xhr = xhr;
+		})
+
+		function appendHtml(num){
+			var html = '';
+			for(var i=0;i<num.length;i++){
+				html += '<li>'+num[i]+'</li>';
+			}
+			console.log(html);
+			numbers.innerHTML = html;
+		}
+	</script>
+</body>
+</html>
